@@ -55,3 +55,28 @@ This file is the source of truth for durable product and architecture decisions.
 ## Assumptions policy
 
 An assumption is not a decision. Every assumption must have an owner, a validation method, and a resolution date before it can become a shipped product behavior. If a missing decision affects safety, privacy, data integrity, cost, or irreversible behavior, stop and ask the product owner.
+
+
+## Confirmed decisions — 2026-11-08
+
+### DEC-007 — Supabase backend
+- **Decision:** Supabase is the selected backend platform.
+- Intended capabilities: Auth, Postgres, Storage only where needed, and Edge Functions for server-side integrations.
+- Required controls: RLS for user-owned data, least-privilege grants, authenticated/authorized functions, version-controlled migrations, separate environments.
+- Still open: sign-in methods, schema, storage retention, hosting region, backup/restore objectives, and detailed policies.
+- Status: platform confirmed; implementation design pending.
+
+### DEC-008 — Gemini through Supabase Edge Functions
+- **Decision:** Gemini is the selected AI provider.
+- **Decision:** Every Gemini request from Flutter must pass through a Supabase Edge Function. Store the Gemini API credential as a Supabase Edge Function secret and read it only server-side.
+- Prohibited: Gemini key in Dart, assets, build config, Git, client responses, logs, or analytics.
+- Functions must authenticate/authorize callers, validate/bound inputs, enforce rate/quota/cost controls, validate model output, and return typed drafts.
+- AI output is a proposal, not verified nutrition data; user review/edit/confirmation is mandatory before saving.
+- Still open: model/version, fallback, prompt/schema versioning, image/audio support, retention, evaluation, usage limits, and budget.
+- Status: provider and security boundary confirmed; implementation details pending.
+
+### DEC-009 — Expanded tracking and capture
+- **Decision:** Required capabilities include calories, carbs, protein, fat, sugar, fiber, sodium, water, steps, burned calories, running, weightlifting, and free-text/manual workout entry.
+- **Decision:** Food capture must support photo scan, barcode, food-label scan, gallery, voice, manual entry, and food database search.
+- These are required product capabilities; this does not mean every method ships in the first release. Prioritization and external integrations remain open.
+- Detailed contract: `docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md`.
