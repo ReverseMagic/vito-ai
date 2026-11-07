@@ -17,13 +17,13 @@ A mobile-first nutrition and calorie-tracking product for iOS and Android, with 
 
 ## Engineering approach
 
-This repository is governed by [AGENTS.md](AGENTS.md). Product scope and measurable acceptance criteria live in [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md). Expanded nutrition, activity, food-capture, Supabase, and Gemini requirements are in [docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md](docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md). Architecture and product decisions live in [docs/DECISIONS.md](docs/DECISIONS.md). Current Flutter SDK and dependency compatibility research is in [docs/TECHNICAL_FOUNDATION_RESEARCH.md](docs/TECHNICAL_FOUNDATION_RESEARCH.md). Current project state lives in [docs/PROJECT.md](docs/PROJECT.md), known issues live in [docs/ISSUES.md](docs/ISSUES.md), product/competitor/food-data research is in [docs/PRODUCT_DISCOVERY.md](docs/PRODUCT_DISCOVERY.md), and candidate user flows/navigation are documented in [docs/USER_JOURNEYS.md](docs/USER_JOURNEYS.md) and [docs/INFORMATION_ARCHITECTURE.md](docs/INFORMATION_ARCHITECTURE.md).
+This repository is governed by [AGENTS.md](AGENTS.md). Product scope and measurable acceptance criteria live in [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md). Expanded nutrition, activity, food-capture, Supabase, and Gemini requirements are in [docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md](docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md). The proposed persistence model is in [docs/DATA_MODEL.md](docs/DATA_MODEL.md), and proposed AI/backend request contracts are in [docs/EDGE_FUNCTION_CONTRACTS.md](docs/EDGE_FUNCTION_CONTRACTS.md). Architecture and product decisions live in [docs/DECISIONS.md](docs/DECISIONS.md). Current Flutter SDK and dependency compatibility research is in [docs/TECHNICAL_FOUNDATION_RESEARCH.md](docs/TECHNICAL_FOUNDATION_RESEARCH.md). Current project state lives in [docs/PROJECT.md](docs/PROJECT.md), known issues live in [docs/ISSUES.md](docs/ISSUES.md), product/competitor/food-data research is in [docs/PRODUCT_DISCOVERY.md](docs/PRODUCT_DISCOVERY.md), and candidate user flows/navigation are documented in [docs/USER_JOURNEYS.md](docs/USER_JOURNEYS.md) and [docs/INFORMATION_ARCHITECTURE.md](docs/INFORMATION_ARCHITECTURE.md).
 
 We prioritize understandable UX, low cognitive load, data correctness, privacy, accessibility, reliability, and measured performance over feature count or architectural ceremony.
 
 ## Status
 
-Repository foundation and product definition are being established. No app feature should be described as implemented until it exists and passes its acceptance checks.
+Repository foundation and product definition are being established. The data model and Edge Function contracts are proposals pending review. No app feature should be described as implemented until it exists and passes its acceptance checks.
 
 ## Planned setup
 
