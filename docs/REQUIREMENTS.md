@@ -107,3 +107,19 @@ Performance claims require profile/release-mode measurements on representative p
 - Analytics approach and consent policy.
 - Supported minimum iOS and Android versions.
 - Monetization and subscription scope.
+
+
+### Motion and interaction quality requirements
+
+Motion, animation, transitions, visual effects, and microinteractions are required parts of product quality. They must be purposeful, documented, accessible, consistent, and verified—not added randomly as decoration.
+
+| ID | Requirement | Acceptance condition | Verification evidence | Status |
+|---|---|---|---|---|
+| MOT-001 | Motion system | Motion tokens and shared transition/feedback contracts are centralized; feature code does not scatter arbitrary timings or curves | Token review, static review, component tests | Not Started |
+| MOT-002 | Interaction feedback | Every meaningful interactive state provides clear and timely visual feedback; haptics supplement but never replace visual/semantic feedback | Interaction inventory, widget tests, device review | Not Started |
+| MOT-003 | Navigation and surfaces | Screen transitions, sheets, dialogs, overlays, and back/dismiss gestures are coherent, interruptible, and platform-appropriate | iOS/Android device walkthroughs and integration tests | Not Started |
+| MOT-004 | Reduced motion | OS reduced-motion preference is respected; essential information and tasks remain fully usable without non-essential animation | Accessibility tests and device review | Not Started |
+| MOT-005 | Motion performance | Motion/effects are profiled in profile/release mode on representative devices; jank and frame timing are recorded against an agreed budget | DevTools traces, device/build report | Not Started |
+| MOT-006 | Effects restraint | Blur, shadows, parallax, gradients, and other effects have a documented purpose and no unacceptable rendering, battery, thermal, or accessibility cost | Design review and performance profiling | Not Started |
+| MOT-007 | RTL/platform correctness | Directional transitions, gestures, sheets, and system interactions are reviewed in Arabic RTL and English LTR on iOS and Android | Locale/platform test matrix and device evidence | Not Started |
+| MOT-008 | Documentation parity | Motion inventory, token definitions, component contracts, and feature specs are updated whenever behavior changes | PR checklist and documentation review | Not Started |
