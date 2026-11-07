@@ -51,7 +51,7 @@ Do not create empty directories or speculative layers merely to match this sketc
 
 ## Environments and services
 
-No backend project or production service is connected yet. Development, staging, and production configuration must be separated before external services or deployments are introduced. Secrets belong in secret managers, never in Git.
+Supabase is the selected backend platform; no Supabase project is connected yet. Gemini is the selected AI provider; all requests must pass through Supabase Edge Functions, with the Gemini credential stored as an Edge Function secret. No production service is connected yet. Separate development, staging, and production configuration. Secrets belong in secret managers, never in Git.
 
 ## Release status
 
