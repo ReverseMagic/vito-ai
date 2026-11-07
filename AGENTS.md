@@ -84,3 +84,17 @@ Critical user journeys, data integrity, privacy, authorization, localization, ac
 - Keep commits focused and descriptive.
 - Update the relevant source-of-truth document when a durable product or architecture decision changes.
 - Add regression tests for defects. Fix root causes rather than suppressing symptoms.
+
+
+## Motion, animation, and interaction quality
+
+- Treat animation, transitions, motion, visual effects, and microinteractions as first-class product and engineering requirements—not optional polish.
+- Every interactive component and meaningful state transition must have an intentional interaction/motion specification before implementation.
+- Centralize motion tokens and reusable transition behavior. Do not scatter arbitrary durations, curves, spring parameters, or effect settings across features.
+- Document each motion's trigger, purpose, duration/curve or physics, affected properties, interruption/reversal behavior, reduced-motion alternative, and platform differences.
+- Motion must reinforce hierarchy, causality, spatial continuity, and feedback. Avoid decorative motion that competes with nutrition information or slows task completion.
+- Provide immediate feedback for taps, presses, selection, validation, loading, success, errors, navigation, and data changes as appropriate. Haptics are supplemental, never the only feedback.
+- Respect OS reduced-motion preferences. Essential information and functionality must remain available without animation.
+- Avoid flashing, parallax that causes discomfort, autoplaying attention traps, excessive bounce, layout thrashing, and expensive effects that harm battery, accessibility, or frame time.
+- Verify motion on physical iOS and Android devices in profile/release mode. Measure frame timing and inspect jank; do not claim 60 fps or smoothness without evidence.
+- Update the relevant docs whenever motion tokens, interaction contracts, component behavior, platform behavior, or acceptance criteria change. Keep implementation and documentation synchronized in the same change/PR.
