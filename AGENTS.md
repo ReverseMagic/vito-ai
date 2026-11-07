@@ -98,3 +98,16 @@ Critical user journeys, data integrity, privacy, authorization, localization, ac
 - Avoid flashing, parallax that causes discomfort, autoplaying attention traps, excessive bounce, layout thrashing, and expensive effects that harm battery, accessibility, or frame time.
 - Verify motion on physical iOS and Android devices in profile/release mode. Measure frame timing and inspect jank; do not claim 60 fps or smoothness without evidence.
 - Update the relevant docs whenever motion tokens, interaction contracts, component behavior, platform behavior, or acceptance criteria change. Keep implementation and documentation synchronized in the same change/PR.
+
+
+## Supabase and Gemini security requirements
+
+- Store the Gemini API key only in Supabase Edge Function secrets and read it only from the Edge Function runtime environment.
+- Never place the Gemini key in Dart source, Flutter assets, mobile build-time defines, configuration, logs, error messages, analytics, or API responses.
+- The mobile app may use the Supabase project URL and publishable key. A publishable key does not replace authorization: enforce RLS and least-privilege grants.
+- Never ship Supabase secret/service-role keys in the app; they bypass RLS.
+- Every user-scoped Edge Function authenticates and authorizes the caller; never trust a user ID supplied in the request body.
+- Validate payload sizes/types, allowed file types, MIME types, quotas, rate limits, and response schemas.
+- Avoid logging raw food photos, voice recordings, labels, diary content, or profile data by default.
+- Keep local, staging, and production secrets separate. Ignore local secret files; commit only safe placeholder templates.
+- Document key rotation, suspected exposure response, quota monitoring, and incident response before public release.

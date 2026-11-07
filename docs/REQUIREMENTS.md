@@ -123,3 +123,46 @@ Motion, animation, transitions, visual effects, and microinteractions are requir
 | MOT-006 | Effects restraint | Blur, shadows, parallax, gradients, and other effects have a documented purpose and no unacceptable rendering, battery, thermal, or accessibility cost | Design review and performance profiling | Not Started |
 | MOT-007 | RTL/platform correctness | Directional transitions, gestures, sheets, and system interactions are reviewed in Arabic RTL and English LTR on iOS and Android | Locale/platform test matrix and device evidence | Not Started |
 | MOT-008 | Documentation parity | Motion inventory, token definitions, component contracts, and feature specs are updated whenever behavior changes | PR checklist and documentation review | Not Started |
+
+
+## Expanded nutrition, hydration, activity, and capture requirements — 2026-11-08
+
+### Nutrition and hydration
+- Track calories (kcal), carbohydrates (g), protein (g), total fat (g), total sugars (g), dietary fiber (g), sodium (mg), and water intake (ml or an explicitly selected unit).
+- Keep total sugars distinct from added sugars if the latter is supported. Never confuse sodium with salt.
+- Unknown nutrient values remain unknown/null, never silently zero.
+- Every value retains source, serving basis, original unit/value, and normalized value. Conversions and rounding are deterministic and tested.
+
+### Activity and body measurements
+- Track daily steps and burned/activity calories, with explicit provenance: user-entered, device-imported, estimated, or calculated.
+- Support running, weightlifting/strength, and other manually described workouts.
+- Manual workout entry must work without a wearable. Minimum fields: type, date, free-text description; time, duration, distance, sets/reps/load, effort, and calorie estimate are optional unless a selected calculation requires them.
+- Track dated body-weight entries with units and history. Editing a value must not rewrite unrelated history.
+- Do not add exercise calories back into the food budget until a single explicit calculation policy is approved. Manually entered burned calories must never be presented as measured.
+
+### Food capture methods
+- Camera meal-photo scan.
+- Barcode scan and catalog lookup.
+- Food/nutrition-label scan and extraction.
+- Gallery photo selection.
+- Voice description/transcription.
+- Manual food/meal entry.
+- Food database search, including Arabic/English names and validated aliases.
+- Every method supports cancel, retry, correction, and manual fallback.
+- AI, OCR, and voice extraction produce editable drafts; explicit user confirmation is required before saving.
+- Show source, serving size, data completeness, and whether label values are per-serving or per-100g/ml.
+- Request camera/microphone/gallery permissions only at point of need. Explain remote media processing and retention before upload.
+
+### Acceptance additions
+| ID | Criterion | Evidence |
+|---|---|---|
+| NUT-008 | Calories, carbs, protein, fat, sugar, fiber, sodium aggregate correctly | Tests for known values, missing values, rounding, mixed serving sizes |
+| HYD-002 | Water entries support units, edit/delete, and daily totals | Unit/widget tests |
+| ACT-006 | Steps and burned calories show provenance and measurement/estimate status | Data contract tests and UI review |
+| ACT-007 | Running, weightlifting, and free-text workouts can be created, edited, deleted | Journey tests |
+| BODY-002 | Dated weight history preserves units and unrelated records | Persistence tests |
+| CAP-008 | All seven capture methods cover loading, empty, error, cancel, retry, recovery | Journey matrix |
+| CAP-009 | AI/voice/OCR outputs are editable drafts requiring explicit confirmation | Integration tests |
+| DATA-001 | Displayed values have traceable provenance and unit semantics | Data-contract audit |
+| SEC-001 | Gemini credential exists only in Supabase Edge Function secrets | Secret scan and mobile artifact inspection |
+| SEC-002 | Edge Functions authenticate, authorize, validate, limit usage, and return bounded structured results | Security and abuse tests |

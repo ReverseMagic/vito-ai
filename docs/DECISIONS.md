@@ -57,18 +57,26 @@ This file is the source of truth for durable product and architecture decisions.
 An assumption is not a decision. Every assumption must have an owner, a validation method, and a resolution date before it can become a shipped product behavior. If a missing decision affects safety, privacy, data integrity, cost, or irreversible behavior, stop and ask the product owner.
 
 
-## Proposed technical baseline (not approved or build-verified)
+## Confirmed decisions — 2026-11-08
 
-### PROP-001 — Candidate Flutter toolchain and packages
-- Research date: 2026-11-08
-- Evidence: Flutter stable hotfix tracker identifies Flutter 3.47.9 with Dart 3.13.7; current pub.dev package metadata lists flutter_riverpod 3.5.0 (Dart >=3.12) and go_router 18.1.3 (Flutter >=3.44 / Dart >=3.12). intl 0.20.3 and flutter_lints 6.0.0 are also compatible by their published minimum Dart versions.
-- Proposal: Use Flutter 3.47.9 stable / Dart 3.13.7 as the candidate SDK baseline; use handwritten Riverpod providers and GoRouter routes; no generator packages.
-- Unresolved: Riverpod 3.5.0 has only just been released; verify it against the app before adoption. Review the Flutter 3.44 standalone Material/Cupertino package migration. Run dependency resolution, tests, and Android/iOS builds before pinning the versions in project files.
-- Status: Proposed — not approved, not implemented, not build-verified.
-- Research: `docs/TECHNICAL_FOUNDATION_RESEARCH.md`.
+### DEC-007 — Supabase backend
+- **Decision:** Supabase is the selected backend platform.
+- Intended capabilities: Auth, Postgres, Storage only where needed, and Edge Functions for server-side integrations.
+- Required controls: RLS for user-owned data, least-privilege grants, authenticated/authorized functions, version-controlled migrations, separate environments.
+- Still open: sign-in methods, schema, storage retention, hosting region, backup/restore objectives, and detailed policies.
+- Status: platform confirmed; implementation design pending.
 
-### PROP-002 — Manual localization implementation
-- Research date: 2026-11-08
-- Proposal: Use Flutter localization runtime delegates with handwritten English/Arabic resources and parity tests; use intl for formatting only where required. Do not use gen_l10n output or any localization code generator.
-- Status: Proposed — not yet implemented.
-- Research: `docs/TECHNICAL_FOUNDATION_RESEARCH.md`.
+### DEC-008 — Gemini through Supabase Edge Functions
+- **Decision:** Gemini is the selected AI provider.
+- **Decision:** Every Gemini request from Flutter must pass through a Supabase Edge Function. Store the Gemini API credential as a Supabase Edge Function secret and read it only server-side.
+- Prohibited: Gemini key in Dart, assets, build config, Git, client responses, logs, or analytics.
+- Functions must authenticate/authorize callers, validate/bound inputs, enforce rate/quota/cost controls, validate model output, and return typed drafts.
+- AI output is a proposal, not verified nutrition data; user review/edit/confirmation is mandatory before saving.
+- Still open: model/version, fallback, prompt/schema versioning, image/audio support, retention, evaluation, usage limits, and budget.
+- Status: provider and security boundary confirmed; implementation details pending.
+
+### DEC-009 — Expanded tracking and capture
+- **Decision:** Required capabilities include calories, carbs, protein, fat, sugar, fiber, sodium, water, steps, burned calories, running, weightlifting, and free-text/manual workout entry.
+- **Decision:** Food capture must support photo scan, barcode, food-label scan, gallery, voice, manual entry, and food database search.
+- These are required product capabilities; this does not mean every method ships in the first release. Prioritization and external integrations remain open.
+- Detailed contract: `docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md`.

@@ -189,3 +189,12 @@ When changing motion behavior, update this document, relevant feature specificat
 - No animation blocks input or delays essential actions.
 - Profile/release-mode traces on representative devices show no unacceptable jank; measured results and device/build details are recorded.
 - Effects are reviewed for battery, thermal, accessibility, and rendering cost.
+
+
+## Required motion coverage for all newly added journeys
+
+- Food scan, barcode, label, gallery, voice, and manual-entry flows must each define interaction states and feedback.
+- Scan overlays, camera focus indicators, recording states, waveform/voice capture, progress, result transitions, editable draft presentation, and save confirmation must use shared motion tokens.
+- Animation must never imply that an AI estimate or barcode match is verified.
+- Respect iOS Reduce Motion and Android system animation preferences; keep capture and review fully usable without non-essential motion.
+- Motion specs, tokens, state diagrams, and tests must be updated in the same PR as behavior changes.
