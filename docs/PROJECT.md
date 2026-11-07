@@ -22,8 +22,9 @@
 ## Current status
 
 - Repository is public and initially empty at project start.
-- Initial product/engineering governance is being established.
-- Flutter SDK version, package versions, backend provider, AI provider/model, food-data providers, supported OS minimums, and final brand identity are not yet verified/approved.
+- Initial product/engineering governance is documented. Competitor/food-data research, Flutter compatibility research, core user journeys, and information architecture are documented. Product priorities and navigation remain proposals pending user validation and product-owner approval.
+- Candidate toolchain research recommends Flutter 3.47.9 stable / Dart 3.13.7; this has not yet been installed, pinned, or build-verified. Riverpod and GoRouter package candidates and no-codegen localization constraints are documented in `docs/TECHNICAL_FOUNDATION_RESEARCH.md`.
+- Backend provider, AI provider/model, food-data providers, supported OS minimums, and final brand identity remain unselected.
 - No mobile feature, backend, migration, build, or test is currently claimed as implemented.
 
 ## Planned structure

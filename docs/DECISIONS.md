@@ -55,3 +55,20 @@ This file is the source of truth for durable product and architecture decisions.
 ## Assumptions policy
 
 An assumption is not a decision. Every assumption must have an owner, a validation method, and a resolution date before it can become a shipped product behavior. If a missing decision affects safety, privacy, data integrity, cost, or irreversible behavior, stop and ask the product owner.
+
+
+## Proposed technical baseline (not approved or build-verified)
+
+### PROP-001 — Candidate Flutter toolchain and packages
+- Research date: 2026-11-08
+- Evidence: Flutter stable hotfix tracker identifies Flutter 3.47.9 with Dart 3.13.7; current pub.dev package metadata lists flutter_riverpod 3.5.0 (Dart >=3.12) and go_router 18.1.3 (Flutter >=3.44 / Dart >=3.12). intl 0.20.3 and flutter_lints 6.0.0 are also compatible by their published minimum Dart versions.
+- Proposal: Use Flutter 3.47.9 stable / Dart 3.13.7 as the candidate SDK baseline; use handwritten Riverpod providers and GoRouter routes; no generator packages.
+- Unresolved: Riverpod 3.5.0 has only just been released; verify it against the app before adoption. Review the Flutter 3.44 standalone Material/Cupertino package migration. Run dependency resolution, tests, and Android/iOS builds before pinning the versions in project files.
+- Status: Proposed — not approved, not implemented, not build-verified.
+- Research: `docs/TECHNICAL_FOUNDATION_RESEARCH.md`.
+
+### PROP-002 — Manual localization implementation
+- Research date: 2026-11-08
+- Proposal: Use Flutter localization runtime delegates with handwritten English/Arabic resources and parity tests; use intl for formatting only where required. Do not use gen_l10n output or any localization code generator.
+- Status: Proposed — not yet implemented.
+- Research: `docs/TECHNICAL_FOUNDATION_RESEARCH.md`.
