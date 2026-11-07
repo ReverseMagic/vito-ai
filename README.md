@@ -17,7 +17,7 @@ A mobile-first nutrition and calorie-tracking product for iOS and Android, with 
 
 ## Engineering approach
 
-This repository is governed by [AGENTS.md](AGENTS.md). Product scope and measurable acceptance criteria live in [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md). Architecture and product decisions live in [docs/DECISIONS.md](docs/DECISIONS.md). Current project state lives in [docs/PROJECT.md](docs/PROJECT.md), and known issues live in [docs/ISSUES.md](docs/ISSUES.md).
+This repository is governed by [AGENTS.md](AGENTS.md). Product scope and measurable acceptance criteria live in [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md). Architecture and product decisions live in [docs/DECISIONS.md](docs/DECISIONS.md). Current Flutter SDK and dependency compatibility research is in [docs/TECHNICAL_FOUNDATION_RESEARCH.md](docs/TECHNICAL_FOUNDATION_RESEARCH.md). Current project state lives in [docs/PROJECT.md](docs/PROJECT.md), and known issues live in [docs/ISSUES.md](docs/ISSUES.md).
 
 We prioritize understandable UX, low cognitive load, data correctness, privacy, accessibility, reliability, and measured performance over feature count or architectural ceremony.
 
