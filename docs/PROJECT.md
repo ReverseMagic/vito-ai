@@ -22,7 +22,8 @@
 ## Current status
 
 - Repository is public and initially empty at project start.
-- Initial product/engineering governance is being established.
+- Initial product/engineering governance is documented.
+- Candidate competitor/food-data research, Flutter compatibility research, core user journeys, and information architecture are documented. These are proposals and research artifacts, not approved final scope or implemented app behavior.
 - Flutter SDK version, package versions, backend provider, AI provider/model, food-data providers, supported OS minimums, and final brand identity are not yet verified/approved.
 - No mobile feature, backend, migration, build, or test is currently claimed as implemented.
 
