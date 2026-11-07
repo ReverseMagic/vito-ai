@@ -130,3 +130,62 @@ Every shared component and critical screen is reviewed across:
 - iOS and Android behavior where the interaction is platform-sensitive.
 
 A clean screenshot is not sufficient acceptance evidence. Interaction, semantics, localization, and failure states must also pass.
+
+
+## Motion, transitions, effects, and microinteractions (required)
+
+Motion is part of the product's interaction language. The goal is not to animate everything; the goal is to make every meaningful interaction feel responsive, coherent, understandable, and polished.
+
+### Motion principles
+
+- **Purpose before spectacle:** every animation must communicate feedback, hierarchy, continuity, cause/effect, or state. If it does none of these, remove it.
+- **Immediate response:** acknowledge user input promptly. Never make users wait for an animation to finish before they can continue.
+- **Continuity:** use spatially coherent transitions when moving between related content or navigation levels.
+- **Consistency:** the same interaction pattern uses the same motion contract across the app.
+- **Restraint:** keep effects subtle and avoid competing with food, nutrition values, and primary actions.
+- **Control:** animations should be interruptible and reversible where that improves usability; preserve user input and state during transitions.
+- **Accessibility:** respect the operating system's reduced-motion preference and provide a meaningful alternative without loss of information or functionality.
+- **Platform fit:** adapt gestures, navigation transitions, sheets, feedback, and system surfaces to iOS and Android conventions.
+
+### Motion inventory and specification
+
+Before implementation, document the motion for each relevant journey/component, including:
+
+- App launch and first-frame/theme restoration (avoid wrong-theme flashes).
+- Screen navigation, nested routes, back navigation, and shared-element-like continuity where justified.
+- Modal sheets, dialogs, menus, and overlays: entrance, exit, drag/dismiss, and interruption.
+- Button press, icon-button press, selection, toggles, segmented controls, and focus.
+- Text fields: focus, validation, helper/error text, and keyboard/inset changes.
+- Food search: query feedback, loading, result updates, empty state, and selection.
+- Diary add/edit/delete/reorder: insertion/removal, totals recalculation, undo, and confirmation.
+- Calorie and macro progress changes: value transitions that remain readable and do not misrepresent estimates.
+- Charts and progress history: reveal/selection/tooltip behavior and accessible non-animated alternatives.
+- Loading, skeleton, success, error, offline, retry, and permission states.
+- Haptic feedback for meaningful committed actions, where supported and appropriate.
+
+Each specification records: user trigger; intent; start/end state; properties animated; duration and easing/physics; interruption/cancellation/reversal; reduced-motion behavior; RTL implications; iOS/Android differences; performance risk; and verification method. Do not invent a universal duration before testing; define a small coherent token scale and tune it using real device evaluation.
+
+### Effects and rendering constraints
+
+- Blur, gradients, shadows, parallax, particle effects, animated backgrounds, and image transitions require a clear purpose and measured cost.
+- Avoid expensive or broad blur, unnecessary opacity/layer stacking, continuously repainting effects, and animations that trigger repeated expensive layout.
+- Prefer transform/opacity or other efficient compositing when appropriate, but profile actual implementation rather than assuming an optimization.
+- Never communicate nutrition correctness, urgency, or health status through animation alone.
+- Do not use motion to shame, pressure, or manipulate users into logging.
+
+### Required motion documentation
+
+Maintain a motion token table and a motion/interaction inventory as the implementation grows. Every shared component entry must identify its states and motion contract. Feature-level motion belongs in the feature's UX/implementation documentation and must use shared tokens unless an exception is justified and recorded.
+
+When changing motion behavior, update this document, relevant feature specifications, tests, and screenshots/video evidence where useful in the same pull request. Documentation must describe shipped behavior, not aspirational behavior.
+
+### Motion acceptance checklist
+
+- All meaningful interactive states have documented feedback.
+- Motion is consistent with shared tokens and component contracts.
+- Reduced-motion behavior is tested and preserves task completion.
+- Navigation, sheets, keyboard/insets, and back gestures are verified on iOS and Android.
+- RTL transitions and directional elements are reviewed; meaningful content is not blindly mirrored.
+- No animation blocks input or delays essential actions.
+- Profile/release-mode traces on representative devices show no unacceptable jank; measured results and device/build details are recorded.
+- Effects are reviewed for battery, thermal, accessibility, and rendering cost.
