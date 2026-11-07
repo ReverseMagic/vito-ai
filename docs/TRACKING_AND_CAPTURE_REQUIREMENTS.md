@@ -62,3 +62,15 @@ The Gemini key exists only in Supabase Edge Function secrets. It must never appe
 - Gemini key absent from source, mobile artifacts, logs, and responses.
 - Edge Function auth, authorization, validation, rate/quota controls, timeout, and failure handling tested.
 - Camera/microphone/gallery denial and recovery paths tested on both platforms.
+
+
+## Official implementation references checked (2026-11-08)
+
+- Supabase Flutter client: https://supabase.com/docs/reference/dart/introduction
+- Supabase Flutter quickstart and production RLS/key guidance: https://supabase.com/docs/guides/getting-started/quickstarts/flutter
+- Supabase Edge Functions overview and server-side AI integration use cases: https://supabase.com/docs/guides/functions
+- Supabase Edge Function secret management and runtime environment variables: https://supabase.com/docs/guides/functions/secrets
+- Supabase Edge Function authentication patterns: https://supabase.com/docs/guides/functions/auth
+- Google Gemini API key security and backend proxy guidance: https://ai.google.dev/gemini-api/docs/api-key
+
+These references support the proposed server-side secret boundary and Supabase integration. They do not constitute a completed deployment, configured project, or verified implementation.
