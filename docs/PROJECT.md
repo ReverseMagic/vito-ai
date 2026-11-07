@@ -19,12 +19,21 @@
 - No web, desktop, or tablet-first product.
 - First-party centralized design system and consistent interaction patterns.
 
-## Current status
+## Selected platforms and services
 
-- Repository is public and initially empty at project start.
-- Initial product/engineering governance is being established.
-- Flutter SDK version, package versions, backend provider, AI provider/model, food-data providers, supported OS minimums, and final brand identity are not yet verified/approved.
-- No mobile feature, backend, migration, build, or test is currently claimed as implemented.
+- Supabase is the selected backend platform. No Supabase project is connected yet.
+- Gemini is the selected AI provider. All Gemini requests must pass through authenticated Supabase Edge Functions.
+- The Gemini API key must be stored only as a server-side Edge Function secret.
+- No production service, database migration, or Edge Function is currently deployed.
+- Food catalog provider, auth methods, Supabase region, storage policy, and backup/restore configuration remain undecided.
+
+## Current documentation status
+
+- Product requirements and acceptance criteria are documented in `docs/REQUIREMENTS.md` and `docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md`.
+- A proposed persistence model is documented in `docs/DATA_MODEL.md`; it is not yet approved or migrated.
+- Proposed AI/backend contracts are documented in `docs/EDGE_FUNCTION_CONTRACTS.md`; they are not implemented or deployed.
+- Architecture and product decisions are tracked in `docs/DECISIONS.md`.
+- Flutter SDK version, package versions, and supported OS minimums still require current compatibility research and approval.
 
 ## Planned structure
 
@@ -51,8 +60,8 @@ Do not create empty directories or speculative layers merely to match this sketc
 
 ## Environments and services
 
-Supabase is the selected backend platform; no Supabase project is connected yet. Gemini is the selected AI provider; all requests must pass through Supabase Edge Functions, with the Gemini credential stored as an Edge Function secret. No production service is connected yet. Separate development, staging, and production configuration. Secrets belong in secret managers, never in Git.
+Use separate development, staging, and production configuration. Secrets belong in secret managers, never in Git. Supabase publishable keys may be present in the mobile client only with RLS and least-privilege policies; service-role credentials and Gemini credentials must remain server-side.
 
 ## Release status
 
-Not started. Store listing, bundle identifiers, signing, privacy disclosures, supported OS versions, and release pipelines require explicit decisions and verification.
+Not started. Store listing, bundle identifiers, signing, privacy disclosures, supported OS versions, and release pipelines require explicit decisions and verification. No mobile feature, backend, migration, build, or test is currently claimed as implemented.
