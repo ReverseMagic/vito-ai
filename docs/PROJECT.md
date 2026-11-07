@@ -22,7 +22,9 @@
 ## Current status
 
 - Repository is public and initially empty at project start.
-- Initial product/engineering governance is being established.
+- Initial product/engineering governance is documented.
+- A desk-research baseline covering competitor workflows, food-data sources, AI capture guardrails, motion/accessibility, and candidate MVP priorities is documented in `docs/PRODUCT_DISCOVERY.md`.
+- User interviews, usability testing, regional food coverage validation, nutrition-methodology review, and vendor selection remain outstanding.
 - Flutter SDK version, package versions, backend provider, AI provider/model, food-data providers, supported OS minimums, and final brand identity are not yet verified/approved.
 - No mobile feature, backend, migration, build, or test is currently claimed as implemented.
 
