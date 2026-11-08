@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -24,6 +26,6 @@ final localDatabaseProvider = FutureProvider<Database>((ref) async {
       );
     },
   );
-  ref.onDispose(() => database.close());
+  ref.onDispose(() => unawaited(database.close()));
   return database;
 });
