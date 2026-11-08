@@ -32,13 +32,16 @@ final localDatabaseProvider = FutureProvider<Database>((ref) async {
     onUpgrade: (Database db, int oldVersion, int newVersion) async {
       if (oldVersion < 2) {
         await db.execute(
-          'ALTER TABLE food_entries ADD COLUMN sugar_total_g REAL NULL',
+          'ALTER TABLE food_entries ADD COLUMN sugar_total_g REAL NULL '
+          'CHECK (sugar_total_g IS NULL OR sugar_total_g >= 0)',
         );
         await db.execute(
-          'ALTER TABLE food_entries ADD COLUMN fiber_g REAL NULL',
+          'ALTER TABLE food_entries ADD COLUMN fiber_g REAL NULL '
+          'CHECK (fiber_g IS NULL OR fiber_g >= 0)',
         );
         await db.execute(
-          'ALTER TABLE food_entries ADD COLUMN sodium_mg REAL NULL',
+          'ALTER TABLE food_entries ADD COLUMN sodium_mg REAL NULL '
+          'CHECK (sodium_mg IS NULL OR sodium_mg >= 0)',
         );
         await _createWaterLogsTable(db);
       }
