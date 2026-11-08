@@ -60,9 +60,14 @@ class DiaryScreen extends ConsumerWidget {
                       child: ListTile(
                         title: Text(entry.name),
                         subtitle: Text(
-                          '${_format(entry.proteinGrams)}g ${s.protein.toLowerCase()} · '
-                          '${_format(entry.carbsGrams)}g ${s.carbs.toLowerCase()} · '
-                          '${_format(entry.fatGrams)}g ${s.fat.toLowerCase()}',
+                          '${s.protein}: ${_format(entry.proteinGrams)}g · '
+                          '${s.carbs}: ${_format(entry.carbsGrams)}g · '
+                          '${s.fat}: ${_format(entry.fatGrams)}g\n'
+                          '${s.sugar}: ${_format(entry.sugarTotalGrams)}g · '
+                          '${s.fiber}: ${_format(entry.fiberGrams)}g · '
+                          '${s.sodium}: ${_format(entry.sodiumMg)}mg',
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
