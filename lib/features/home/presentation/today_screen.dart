@@ -12,124 +12,137 @@ class TodayScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations s = AppLocalizations.of(context)!;
-    final DateTime now = DateTime.now();
-    final List<FoodEntry> entries = ref.watch(foodLogProvider).where(
-      (FoodEntry entry) =>
+    return ref.watch(foodLogProvider).when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (Object error, StackTrace stack) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Text(s.dataLoadFailed, textAlign: TextAlign.center),
+        ),
+      ),
+      data: (List<FoodEntry> allEntries) {
+        final DateTime now = DateTime.now();
+        final List<FoodEntry> entries = allEntries.where((FoodEntry entry) =>
           entry.loggedAt.year == now.year &&
           entry.loggedAt.month == now.month &&
           entry.loggedAt.day == now.day,
-    ).toList(growable: false);
-    final int calories = entries.fold<int>(
-      0,
-      (int total, FoodEntry entry) => total + entry.caloriesKcal,
-    );
-    final double? protein = _completeTotal(entries, (FoodEntry e) => e.proteinGrams);
-    final double? carbs = _completeTotal(entries, (FoodEntry e) => e.carbsGrams);
-    final double? fat = _completeTotal(entries, (FoodEntry e) => e.fatGrams);
+        ).toList(growable: false);
+        final int calories = entries.fold<int>(
+          0,
+          (int total, FoodEntry entry) => total + entry.caloriesKcal,
+        );
+        final double? protein =
+            _completeTotal(entries, (FoodEntry e) => e.proteinGrams);
+        final double? carbs =
+            _completeTotal(entries, (FoodEntry e) => e.carbsGrams);
+        final double? fat =
+            _completeTotal(entries, (FoodEntry e) => e.fatGrams);
 
-    return SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(22, 18, 22, 28),
-        children: <Widget>[
-          Row(
+        return SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(22, 18, 22, 28),
             children: <Widget>[
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(s.todayEyebrow,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.secondary,
-                              letterSpacing: 1.1,
-                            )),
-                    const SizedBox(height: 5),
-                    Text(s.goodDay,
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(s.todayEyebrow,
+                            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  letterSpacing: 1.1,
+                                )),
+                        const SizedBox(height: 5),
+                        Text(s.goodDay,
+                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                )),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Theme.of(context).dividerColor),
+                    ),
+                    child: const Icon(Icons.person_outline),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 26),
+              _CaloriesCard(calories: calories, entryCount: entries.length),
+              const SizedBox(height: 25),
+              Text(s.nutrition,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      )),
+              const SizedBox(height: 12),
+              Row(
+                children: <Widget>[
+                  Expanded(child: _MacroCard(label: s.protein, value: protein)),
+                  const SizedBox(width: 10),
+                  Expanded(child: _MacroCard(label: s.carbs, value: carbs)),
+                  const SizedBox(width: 10),
+                  Expanded(child: _MacroCard(label: s.fat, value: fat)),
+                ],
+              ),
+              const SizedBox(height: 25),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(s.recentMeals,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.w700,
                             )),
-                  ],
-                ),
+                  ),
+                  TextButton(
+                    onPressed: () => context.go('/diary'),
+                    child: Text(s.seeAll),
+                  ),
+                ],
               ),
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Theme.of(context).dividerColor),
-                ),
-                child: const Icon(Icons.person_outline),
-              ),
-            ],
-          ),
-          const SizedBox(height: 26),
-          _CaloriesCard(calories: calories, entryCount: entries.length),
-          const SizedBox(height: 25),
-          Text(s.nutrition,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  )),
-          const SizedBox(height: 12),
-          Row(
-            children: <Widget>[
-              Expanded(child: _MacroCard(label: s.protein, value: protein)),
-              const SizedBox(width: 10),
-              Expanded(child: _MacroCard(label: s.carbs, value: carbs)),
-              const SizedBox(width: 10),
-              Expanded(child: _MacroCard(label: s.fat, value: fat)),
-            ],
-          ),
-          const SizedBox(height: 25),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(s.recentMeals,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        )),
-              ),
-              TextButton(
-                onPressed: () => context.go('/diary'),
-                child: Text(s.seeAll),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          if (entries.isEmpty)
-            _EmptyMealsCard(
-              title: s.noMealsYet,
-              subtitle: s.startWithFirstMeal,
-              actionLabel: s.addFood,
-              onAdd: () => context.push('/add-food'),
-            )
-          else
-            ...entries.take(3).map(
-              (FoodEntry entry) => Padding(
-                padding: const EdgeInsets.only(bottom: 9),
-                child: Card(
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                      backgroundColor: Color(0xFFECECE8),
-                      child: Icon(Icons.restaurant_outlined,
-                          color: Color(0xFF151515)),
+              const SizedBox(height: 10),
+              if (entries.isEmpty)
+                _EmptyMealsCard(
+                  title: s.noMealsYet,
+                  subtitle: s.startWithFirstMeal,
+                  actionLabel: s.addFood,
+                  onAdd: () => context.push('/add-food'),
+                )
+              else
+                ...entries.take(3).map(
+                  (FoodEntry entry) => Padding(
+                    padding: const EdgeInsets.only(bottom: 9),
+                    child: Card(
+                      child: ListTile(
+                        leading: const CircleAvatar(
+                          backgroundColor: Color(0xFFECECE8),
+                          child: Icon(Icons.restaurant_outlined,
+                              color: Color(0xFF151515)),
+                        ),
+                        title: Text(entry.name),
+                        subtitle: Text('${entry.caloriesKcal} kcal'),
+                      ),
                     ),
-                    title: Text(entry.name),
-                    subtitle: Text('${entry.caloriesKcal} kcal'),
                   ),
                 ),
+              const SizedBox(height: 18),
+              SizedBox(
+                height: 54,
+                child: FilledButton.icon(
+                  onPressed: () => context.push('/add-food'),
+                  icon: const Icon(Icons.add),
+                  label: Text(s.logFood),
+                ),
               ),
-            ),
-          const SizedBox(height: 18),
-          SizedBox(
-            height: 54,
-            child: FilledButton.icon(
-              onPressed: () => context.push('/add-food'),
-              icon: const Icon(Icons.add),
-              label: Text(s.logFood),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -137,7 +150,8 @@ class TodayScreen extends ConsumerWidget {
     List<FoodEntry> entries,
     double? Function(FoodEntry) valueOf,
   ) {
-    if (entries.isEmpty || entries.any((FoodEntry entry) => valueOf(entry) == null)) {
+    if (entries.isEmpty ||
+        entries.any((FoodEntry entry) => valueOf(entry) == null)) {
       return null;
     }
     return entries.fold<double>(
