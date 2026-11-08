@@ -1,0 +1,38 @@
+# Dart / Flutter
+.dart_tool/
+.packages
+.pub/
+.pub-cache/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+coverage/
+
+# FVM SDK is installed locally
+.fvm/flutter_sdk
+.fvm/versions/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Android local configuration and generated build output
+android/local.properties
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# iOS generated configuration and build output
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/ephemeral/
+ios/Pods/
+ios/.symlinks/
+ios/Runner/GeneratedPluginRegistrant.*
+
+# Secrets and local environment files
+.env
+.env.*
+!.env.example
