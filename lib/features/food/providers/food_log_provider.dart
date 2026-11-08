@@ -21,22 +21,24 @@ class FoodLogNotifier extends AsyncNotifier<List<FoodEntry>> {
   }
 
   Future<void> add(FoodEntry entry) async {
-    final List<FoodEntry>? current = state.asData?.value;
-    if (current == null) {
+    if (state.asData == null) {
       throw StateError('Food log is not ready.');
     }
     await _repository.insert(entry);
     if (!ref.mounted) return;
+    final List<FoodEntry> current =
+        state.asData?.value ?? const <FoodEntry>[];
     state = AsyncValue<List<FoodEntry>>.data(<FoodEntry>[entry, ...current]);
   }
 
   Future<void> remove(String id) async {
-    final List<FoodEntry>? current = state.asData?.value;
-    if (current == null) {
+    if (state.asData == null) {
       throw StateError('Food log is not ready.');
     }
     await _repository.delete(id);
     if (!ref.mounted) return;
+    final List<FoodEntry> current =
+        state.asData?.value ?? const <FoodEntry>[];
     state = AsyncValue<List<FoodEntry>>.data(
       current.where((FoodEntry entry) => entry.id != id).toList(),
     );
