@@ -14,8 +14,8 @@
 - Flutter + Dart.
 - Feature-first architecture.
 - Riverpod with manual providers only.
-- GoRouter without route code generation.
-- No Freezed and no code generation packages.
+- GoRouter without code generation.
+- No Freezed and no third-party code-generation packages. Flutter's built-in ARB localization generation is used.
 - No web, desktop, or tablet-first product.
 - First-party centralized design system and consistent interaction patterns.
 
@@ -32,9 +32,12 @@
 - English and Arabic ARB localization with Flutter's built-in localization generation.
 - Today, Diary, Activity, and Profile tabs.
 - Manual food entry for calories and optional protein/carbohydrate/fat values.
-- Explicit null handling for unknown macro values.
-- Food entries and theme/locale preferences are currently in-memory only and reset when the process ends.
-- Automated Flutter CI workflow is configured for format, analyze, and tests.
+- Local SQLite database with a versioned initial schema and a repository for food entries.
+- Food entry values are stored locally; unknown macro values remain SQL NULL.
+- Today and Diary load asynchronously from SQLite; save/delete operations update the UI after database success.
+- Appearance and language preferences remain in-memory only and reset when the process ends.
+- SQLite repository tests use the FFI implementation.
+- Flutter CI workflow is configured for format, analyze, and tests.
 
 ## Toolchain and dependencies
 
@@ -42,17 +45,19 @@
 - Dart constraint: >=3.12.0 <4.0.0; Dart is supplied by the pinned Flutter SDK.
 - `flutter_riverpod: ^3.5.0`.
 - `go_router: ^18.1.3`.
-- `flutter_lints: ^6.0.0`.
+- `sqflite: ^2.4.5`.
+- Dev dependencies: `flutter_lints: ^6.0.0`, `sqflite_common_ffi: ^2.4.5`.
 - Exact resolved dependency versions will be recorded in `pubspec.lock` after CI/package resolution.
 
 ## Not implemented / blocked
 
 - Native Android/iOS runner projects are not checked in yet; README documents the one-time Flutter platform generation command.
-- Durable SQLite persistence and offline synchronization.
-- Supabase authentication, schema migrations, and RLS policies.
+- Persistent appearance/language preferences and nutrition goal setup.
+- Full nutrient coverage beyond calories and three macros (sugar, fiber, sodium, and water).
+- Supabase authentication, account sync, schema migrations, and RLS policies.
 - Gemini-backed AI capture, barcode/catalog search, label scanning, camera/gallery, and voice capture.
 - Activity/workout entry and device health integrations.
-- Persistent preferences, calorie goals, and nutrient target setup.
+- Backup/export/deletion flows.
 - No Supabase project, production backend, Edge Function, or provider credentials are configured.
 
 ## Architecture and product documentation
@@ -65,4 +70,4 @@
 
 ## Release status
 
-Development only. No release build, device verification, accessibility audit, performance profile, store submission, or production deployment has been completed. Do not treat this slice as a production nutrition record.
+Development only. No release build, device verification, accessibility audit, performance profile, store submission, or production deployment has been completed. The local SQLite database is not a backup or cross-device sync solution.
