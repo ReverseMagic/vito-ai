@@ -10,6 +10,13 @@
   "protein": "Protein",
   "carbs": "Carbs",
   "fat": "Fat",
+  "sugar": "Sugar",
+  "fiber": "Fiber",
+  "sodium": "Sodium",
+  "sodiumMg": "Sodium (mg)",
+  "otherNutrients": "Other nutrients",
+  "waterIntake": "Water intake",
+  "add250Ml": "Add 250 ml",
   "recentMeals": "Recent meals",
   "seeAll": "See all",
   "noMealsYet": "Nothing logged yet",
@@ -40,7 +47,7 @@
   "diaryEmptyDescription": "Food you add will appear here.",
   "removeEntry": "Remove entry",
   "entryRemoved": "Entry removed",
-  "dataLoadFailed": "Your saved food could not be loaded. Please try again.",
+  "dataLoadFailed": "Your saved data could not be loaded. Please try again.",
   "saveFailed": "We couldn't save that change. Please try again.",
   "activityTitle": "Move in your own way.",
   "activityDescription": "Your activity and workouts will live here.",
@@ -58,5 +65,5 @@
   "light": "Light",
   "dark": "Dark",
   "productStatus": "Early access foundation",
-  "productStatusDescription": "Food entries are saved on this device. Account sync and cloud backup are not connected yet."
+  "productStatusDescription": "Food and water entries are saved on this device. Account sync and cloud backup are not connected yet."
 }
