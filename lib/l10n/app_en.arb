@@ -38,6 +38,7 @@
   "back": "Back",
   "noDiaryEntries": "Your diary is empty",
   "diaryEmptyDescription": "Food you add will appear here.",
+  "removeEntry": "Remove entry",
   "entryRemoved": "Entry removed",
   "activityTitle": "Move in your own way.",
   "activityDescription": "Your activity and workouts will live here.",
