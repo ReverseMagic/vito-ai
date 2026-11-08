@@ -20,6 +20,9 @@ class _AddFoodScreenState extends ConsumerState<AddFoodScreen> {
   final TextEditingController _protein = TextEditingController();
   final TextEditingController _carbs = TextEditingController();
   final TextEditingController _fat = TextEditingController();
+  final TextEditingController _sugar = TextEditingController();
+  final TextEditingController _fiber = TextEditingController();
+  final TextEditingController _sodium = TextEditingController();
   bool _isSaving = false;
 
   @override
@@ -29,6 +32,9 @@ class _AddFoodScreenState extends ConsumerState<AddFoodScreen> {
     _protein.dispose();
     _carbs.dispose();
     _fat.dispose();
+    _sugar.dispose();
+    _fiber.dispose();
+    _sodium.dispose();
     super.dispose();
   }
 
@@ -92,18 +98,22 @@ class _AddFoodScreenState extends ConsumerState<AddFoodScreen> {
                         fontWeight: FontWeight.w600,
                       )),
               const SizedBox(height: 12),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                      child: _MacroField(
-                          controller: _protein, label: s.protein)),
-                  const SizedBox(width: 9),
-                  Expanded(
-                      child: _MacroField(controller: _carbs, label: s.carbs)),
-                  const SizedBox(width: 9),
-                  Expanded(child: _MacroField(controller: _fat, label: s.fat)),
-                ],
-              ),
+              _NutrientRow(fields: <Widget>[
+                _MacroField(controller: _protein, label: s.protein),
+                _MacroField(controller: _carbs, label: s.carbs),
+                _MacroField(controller: _fat, label: s.fat),
+              ]),
+              const SizedBox(height: 18),
+              Text(s.otherNutrients,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      )),
+              const SizedBox(height: 12),
+              _NutrientRow(fields: <Widget>[
+                _MacroField(controller: _sugar, label: s.sugar),
+                _MacroField(controller: _fiber, label: s.fiber),
+                _MacroField(controller: _sodium, label: s.sodiumMg),
+              ]),
               const SizedBox(height: 12),
               Text(s.nutrientsMayBeUnknown,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -142,6 +152,9 @@ class _AddFoodScreenState extends ConsumerState<AddFoodScreen> {
       proteinGrams: _optionalValue(_protein),
       carbsGrams: _optionalValue(_carbs),
       fatGrams: _optionalValue(_fat),
+      sugarTotalGrams: _optionalValue(_sugar),
+      fiberGrams: _optionalValue(_fiber),
+      sodiumMg: _optionalValue(_sodium),
       loggedAt: DateTime.now(),
     );
     try {
@@ -174,6 +187,29 @@ class _FieldLabel extends StatelessWidget {
       );
 }
 
+class _NutrientRow extends StatelessWidget {
+  const _NutrientRow({required this.fields});
+
+  final List<Widget> fields;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: fields
+          .map(
+            (Widget field) => Expanded(
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 8),
+                child: field,
+              ),
+            ),
+          )
+          .toList(growable: false),
+    );
+  }
+}
+
 class _MacroField extends StatelessWidget {
   const _MacroField({required this.controller, required this.label});
 
@@ -186,7 +222,10 @@ class _MacroField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(label, style: Theme.of(context).textTheme.labelMedium),
+        Text(label,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.labelMedium),
         const SizedBox(height: 7),
         TextFormField(
           controller: controller,
