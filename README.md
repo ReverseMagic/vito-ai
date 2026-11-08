@@ -40,22 +40,23 @@ fvm flutter test
 ## Current implementation
 
 - Four-tab mobile shell: Today, Diary, Activity, Profile.
-- Manual food entry with calories and optional protein/carbohydrate/fat values.
-- Food diary entries persist in a local SQLite database on the device.
-- Unknown macro values remain SQL NULL and are displayed as unknown, not zero.
+- Manual food entry for calories, carbohydrates, protein, fat, total sugars, fiber, and sodium.
+- Quick-add water intake in 250 ml increments.
+- Food and water entries persist in a local SQLite database on the device.
+- Unknown nutrient values remain SQL NULL and are shown as unknown, not zero.
+- Today summaries include calories, macros, other nutrients, and water intake.
 - English/Arabic localization; Flutter localization supplies RTL direction.
 - System/light/dark appearance selection.
-- SQLite repository and in-memory Riverpod state cache.
+- SQLite repositories and Riverpod async state.
 
 ## Not implemented yet
 
 - Persistent appearance/language preferences and calorie/nutrient goal setup.
 - Supabase authentication, account sync, schema migrations, and RLS policies.
 - Gemini-backed AI capture, barcode/catalog search, label scanning, camera/gallery, and voice capture.
-- Full nutrient coverage beyond calories and the three macronutrients (sugar, fiber, sodium, and water).
 - Activity/workout entry and device health integrations.
 - Backup/export/deletion flows.
 
-**Development limitation:** food logs are stored locally on this device only. They are not synced or backed up to an account. Native Android/iOS runner projects must be generated using the command above before launching on a phone.
+**Development limitation:** food and water logs are stored locally on this device only. They are not synced or backed up to an account. Native Android/iOS runner projects must be generated using the command above before launching on a phone.
 
 The product/engineering decision history and detailed requirements are maintained in [docs/](docs/).
