@@ -20,6 +20,7 @@ class _AddFoodScreenState extends ConsumerState<AddFoodScreen> {
   final TextEditingController _protein = TextEditingController();
   final TextEditingController _carbs = TextEditingController();
   final TextEditingController _fat = TextEditingController();
+  bool _isSaving = false;
 
   @override
   void dispose() {
@@ -66,7 +67,9 @@ class _AddFoodScreenState extends ConsumerState<AddFoodScreen> {
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(hintText: s.foodNameHint),
                 validator: (String? value) =>
-                    value == null || value.trim().isEmpty ? s.requiredField : null,
+                    value == null || value.trim().isEmpty
+                        ? s.requiredField
+                        : null,
               ),
               const SizedBox(height: 18),
               _FieldLabel(text: s.caloriesKcal),
@@ -78,7 +81,9 @@ class _AddFoodScreenState extends ConsumerState<AddFoodScreen> {
                 decoration: const InputDecoration(hintText: '0'),
                 validator: (String? value) {
                   final int? parsed = int.tryParse(value ?? '');
-                  return parsed == null || parsed < 0 ? s.enterValidNumber : null;
+                  return parsed == null || parsed < 0
+                      ? s.enterValidNumber
+                      : null;
                 },
               ),
               const SizedBox(height: 20),
@@ -89,9 +94,12 @@ class _AddFoodScreenState extends ConsumerState<AddFoodScreen> {
               const SizedBox(height: 12),
               Row(
                 children: <Widget>[
-                  Expanded(child: _MacroField(controller: _protein, label: s.protein)),
+                  Expanded(
+                      child: _MacroField(
+                          controller: _protein, label: s.protein)),
                   const SizedBox(width: 9),
-                  Expanded(child: _MacroField(controller: _carbs, label: s.carbs)),
+                  Expanded(
+                      child: _MacroField(controller: _carbs, label: s.carbs)),
                   const SizedBox(width: 9),
                   Expanded(child: _MacroField(controller: _fat, label: s.fat)),
                 ],
@@ -102,7 +110,16 @@ class _AddFoodScreenState extends ConsumerState<AddFoodScreen> {
                         color: Theme.of(context).colorScheme.secondary,
                       )),
               const SizedBox(height: 28),
-              FilledButton(onPressed: _save, child: Text(s.saveFood)),
+              FilledButton(
+                onPressed: _isSaving ? null : _save,
+                child: _isSaving
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(s.saveFood),
+              ),
             ],
           ),
         ),
@@ -115,20 +132,31 @@ class _AddFoodScreenState extends ConsumerState<AddFoodScreen> {
     return double.tryParse(controller.text.trim());
   }
 
-  void _save() {
+  Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
-    ref.read(foodLogProvider.notifier).add(
-          FoodEntry(
-            id: DateTime.now().microsecondsSinceEpoch.toString(),
-            name: _name.text.trim(),
-            caloriesKcal: int.parse(_calories.text.trim()),
-            proteinGrams: _optionalValue(_protein),
-            carbsGrams: _optionalValue(_carbs),
-            fatGrams: _optionalValue(_fat),
-            loggedAt: DateTime.now(),
-          ),
-        );
-    if (mounted) context.pop();
+    setState(() => _isSaving = true);
+    final FoodEntry entry = FoodEntry(
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      name: _name.text.trim(),
+      caloriesKcal: int.parse(_calories.text.trim()),
+      proteinGrams: _optionalValue(_protein),
+      carbsGrams: _optionalValue(_carbs),
+      fatGrams: _optionalValue(_fat),
+      loggedAt: DateTime.now(),
+    );
+    try {
+      await ref.read(foodLogProvider.notifier).add(entry);
+      if (!mounted) return;
+      context.pop();
+    } catch (_) {
+      if (!mounted) return;
+      final AppLocalizations s = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(s.saveFailed)),
+      );
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
+    }
   }
 }
 
