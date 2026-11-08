@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../features/food/models/food_entry.dart';
 import '../../../features/food/providers/food_log_provider.dart';
+import '../../../features/water/models/water_log.dart';
+import '../../../features/water/providers/water_log_provider.dart';
 import '../../../l10n/generated/app_localizations.dart';
 
 class TodayScreen extends ConsumerWidget {
@@ -12,7 +14,10 @@ class TodayScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations s = AppLocalizations.of(context)!;
-    return ref.watch(foodLogProvider).when(
+    final AsyncValue<List<FoodEntry>> foodState = ref.watch(foodLogProvider);
+    final AsyncValue<List<WaterLog>> waterState = ref.watch(waterLogProvider);
+
+    return foodState.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (Object error, StackTrace stack) => Center(
         child: Padding(
@@ -23,9 +28,7 @@ class TodayScreen extends ConsumerWidget {
       data: (List<FoodEntry> allEntries) {
         final DateTime now = DateTime.now();
         final List<FoodEntry> entries = allEntries.where((FoodEntry entry) =>
-          entry.loggedAt.year == now.year &&
-          entry.loggedAt.month == now.month &&
-          entry.loggedAt.day == now.day,
+          _sameDay(entry.loggedAt, now),
         ).toList(growable: false);
         final int calories = entries.fold<int>(
           0,
@@ -37,6 +40,12 @@ class TodayScreen extends ConsumerWidget {
             _completeTotal(entries, (FoodEntry e) => e.carbsGrams);
         final double? fat =
             _completeTotal(entries, (FoodEntry e) => e.fatGrams);
+        final double? sugar =
+            _completeTotal(entries, (FoodEntry e) => e.sugarTotalGrams);
+        final double? fiber =
+            _completeTotal(entries, (FoodEntry e) => e.fiberGrams);
+        final double? sodium =
+            _completeTotal(entries, (FoodEntry e) => e.sodiumMg);
 
         return SafeArea(
           child: ListView(
@@ -83,12 +92,60 @@ class TodayScreen extends ConsumerWidget {
               const SizedBox(height: 12),
               Row(
                 children: <Widget>[
-                  Expanded(child: _MacroCard(label: s.protein, value: protein)),
-                  const SizedBox(width: 10),
-                  Expanded(child: _MacroCard(label: s.carbs, value: carbs)),
-                  const SizedBox(width: 10),
-                  Expanded(child: _MacroCard(label: s.fat, value: fat)),
+                  Expanded(child: _NutrientCard(label: s.protein, value: protein, unit: 'g')),
+                  const SizedBox(width: 9),
+                  Expanded(child: _NutrientCard(label: s.carbs, value: carbs, unit: 'g')),
+                  const SizedBox(width: 9),
+                  Expanded(child: _NutrientCard(label: s.fat, value: fat, unit: 'g')),
                 ],
+              ),
+              const SizedBox(height: 16),
+              Text(s.otherNutrients,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      )),
+              const SizedBox(height: 10),
+              Row(
+                children: <Widget>[
+                  Expanded(child: _NutrientCard(label: s.sugar, value: sugar, unit: 'g')),
+                  const SizedBox(width: 9),
+                  Expanded(child: _NutrientCard(label: s.fiber, value: fiber, unit: 'g')),
+                  const SizedBox(width: 9),
+                  Expanded(child: _NutrientCard(label: s.sodium, value: sodium, unit: 'mg')),
+                ],
+              ),
+              const SizedBox(height: 20),
+              waterState.when(
+                loading: () => const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(18),
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                error: (Object error, StackTrace stack) => Text(s.dataLoadFailed),
+                data: (List<WaterLog> logs) {
+                  final int waterMl = logs
+                      .where((WaterLog log) => _sameDay(log.loggedAt, now))
+                      .fold<int>(0, (int total, WaterLog log) => total + log.volumeMl);
+                  return _WaterCard(
+                    totalMl: waterMl,
+                    onAdd: () async {
+                      final WaterLog log = WaterLog(
+                        id: DateTime.now().microsecondsSinceEpoch.toString(),
+                        volumeMl: 250,
+                        loggedAt: DateTime.now(),
+                      );
+                      try {
+                        await ref.read(waterLogProvider.notifier).add(log);
+                      } catch (_) {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(s.saveFailed)),
+                        );
+                      }
+                    },
+                  );
+                },
               ),
               const SizedBox(height: 25),
               Row(
@@ -145,6 +202,11 @@ class TodayScreen extends ConsumerWidget {
       },
     );
   }
+
+  bool _sameDay(DateTime first, DateTime second) =>
+      first.year == second.year &&
+      first.month == second.month &&
+      first.day == second.day;
 
   double? _completeTotal(
     List<FoodEntry> entries,
@@ -244,21 +306,26 @@ class _CaloriesCard extends StatelessWidget {
   }
 }
 
-class _MacroCard extends StatelessWidget {
-  const _MacroCard({required this.label, required this.value});
+class _NutrientCard extends StatelessWidget {
+  const _NutrientCard({
+    required this.label,
+    required this.value,
+    required this.unit,
+  });
 
   final String label;
   final double? value;
+  final String unit;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(value == null ? '—' : '${value!.toStringAsFixed(0)}g',
+            Text(value == null ? '—' : '${value!.toStringAsFixed(0)}$unit',
                 maxLines: 1,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w700,
@@ -270,6 +337,47 @@ class _MacroCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: Theme.of(context).colorScheme.secondary,
                     )),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WaterCard extends StatelessWidget {
+  const _WaterCard({required this.totalMl, required this.onAdd});
+
+  final int totalMl;
+  final VoidCallback onAdd;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations s = AppLocalizations.of(context)!;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Row(
+          children: <Widget>[
+            const Icon(Icons.water_drop_outlined, size: 26),
+            const SizedBox(width: 13),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(s.waterIntake,
+                      style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 3),
+                  Text('$totalMl ml',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          )),
+                ],
+              ),
+            ),
+            OutlinedButton(
+              onPressed: onAdd,
+              child: Text(s.add250Ml),
+            ),
           ],
         ),
       ),
