@@ -31,13 +31,14 @@
 - Flutter app entry point, app composition, GoRouter tab shell, manual Riverpod providers, and centralized monochrome light/dark themes.
 - English and Arabic ARB localization with Flutter's built-in localization generation.
 - Today, Diary, Activity, and Profile tabs.
-- Manual food entry for calories and optional protein/carbohydrate/fat values.
-- Local SQLite database with a versioned initial schema and a repository for food entries.
-- Food entry values are stored locally; unknown macro values remain SQL NULL.
+- Manual food entry for calories, carbohydrates, protein, fat, total sugars, fiber, and sodium.
+- Quick-add water intake in 250 ml increments.
+- Local SQLite database version 2 with an upgrade path from the first schema, indexes, and separate food/water repositories.
+- Food and water values persist locally; unknown nutrient values remain SQL NULL.
 - Today and Diary load asynchronously from SQLite; save/delete operations update the UI after database success.
 - Appearance and language preferences remain in-memory only and reset when the process ends.
 - SQLite repository tests use the FFI implementation.
-- Flutter CI workflow is configured for format, analyze, and tests.
+- Flutter CI workflow is configured for format, analyze, tests, and an Android debug build after generating the runner.
 
 ## Toolchain and dependencies
 
@@ -53,7 +54,6 @@
 
 - Native Android/iOS runner projects are not checked in yet; README documents the one-time Flutter platform generation command.
 - Persistent appearance/language preferences and nutrition goal setup.
-- Full nutrient coverage beyond calories and three macros (sugar, fiber, sodium, and water).
 - Supabase authentication, account sync, schema migrations, and RLS policies.
 - Gemini-backed AI capture, barcode/catalog search, label scanning, camera/gallery, and voice capture.
 - Activity/workout entry and device health integrations.
@@ -63,7 +63,7 @@
 ## Architecture and product documentation
 
 - Product requirements: `docs/REQUIREMENTS.md` and `docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md`.
-- Proposed persistence model: `docs/DATA_MODEL.md` (not approved or migrated).
+- Proposed account/cloud persistence model: `docs/DATA_MODEL.md` (not approved or migrated).
 - Proposed AI/backend contracts: `docs/EDGE_FUNCTION_CONTRACTS.md` (not implemented or deployed).
 - Architecture decisions: `docs/DECISIONS.md`.
 - Project setup and current state: repository `README.md`.
