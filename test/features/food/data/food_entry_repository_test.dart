@@ -14,16 +14,19 @@ void main() {
     database = await databaseFactoryFfi.openDatabase(
       inMemoryDatabasePath,
       options: OpenDatabaseOptions(
-        version: 1,
+        version: 2,
         onCreate: (Database db, int version) async {
           await db.execute('''
             CREATE TABLE food_entries (
               id TEXT PRIMARY KEY NOT NULL,
               name TEXT NOT NULL CHECK (length(trim(name)) > 0),
               calories_kcal INTEGER NOT NULL CHECK (calories_kcal >= 0),
-              protein_g REAL NULL CHECK (protein_g IS NULL OR protein_g >= 0),
-              carbs_g REAL NULL CHECK (carbs_g IS NULL OR carbs_g >= 0),
-              fat_g REAL NULL CHECK (fat_g IS NULL OR fat_g >= 0),
+              protein_g REAL NULL,
+              carbs_g REAL NULL,
+              fat_g REAL NULL,
+              sugar_total_g REAL NULL,
+              fiber_g REAL NULL,
+              sodium_mg REAL NULL,
               logged_at_utc_ms INTEGER NOT NULL
             )
           ''');
@@ -37,7 +40,7 @@ void main() {
     await database.close();
   });
 
-  test('persists and reads a food entry with known nutrients', () async {
+  test('persists and reads a food entry with nutrient values', () async {
     final FoodEntry entry = FoodEntry(
       id: 'entry-1',
       name: 'Oats',
@@ -45,6 +48,9 @@ void main() {
       carbsGrams: 27,
       proteinGrams: 5,
       fatGrams: 3,
+      sugarTotalGrams: 1,
+      fiberGrams: 4,
+      sodiumMg: 2,
       loggedAt: DateTime(2026, 11, 8, 8),
     );
 
@@ -55,6 +61,9 @@ void main() {
     expect(entries.single.name, 'Oats');
     expect(entries.single.caloriesKcal, 150);
     expect(entries.single.proteinGrams, 5);
+    expect(entries.single.sugarTotalGrams, 1);
+    expect(entries.single.fiberGrams, 4);
+    expect(entries.single.sodiumMg, 2);
   });
 
   test('preserves unknown nutrient values as null', () async {
@@ -65,6 +74,9 @@ void main() {
       carbsGrams: null,
       proteinGrams: null,
       fatGrams: null,
+      sugarTotalGrams: null,
+      fiberGrams: null,
+      sodiumMg: null,
       loggedAt: DateTime(2026, 11, 8, 9),
     );
 
@@ -74,6 +86,9 @@ void main() {
     expect(saved.carbsGrams, isNull);
     expect(saved.proteinGrams, isNull);
     expect(saved.fatGrams, isNull);
+    expect(saved.sugarTotalGrams, isNull);
+    expect(saved.fiberGrams, isNull);
+    expect(saved.sodiumMg, isNull);
   });
 
   test('deletes an entry by id', () async {
@@ -84,6 +99,9 @@ void main() {
       carbsGrams: null,
       proteinGrams: null,
       fatGrams: null,
+      sugarTotalGrams: null,
+      fiberGrams: null,
+      sodiumMg: null,
       loggedAt: DateTime(2026, 11, 8, 10),
     );
 
