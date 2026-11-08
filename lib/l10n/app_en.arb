@@ -40,6 +40,8 @@
   "diaryEmptyDescription": "Food you add will appear here.",
   "removeEntry": "Remove entry",
   "entryRemoved": "Entry removed",
+  "dataLoadFailed": "Your saved food could not be loaded. Please try again.",
+  "saveFailed": "We couldn't save that change. Please try again.",
   "activityTitle": "Move in your own way.",
   "activityDescription": "Your activity and workouts will live here.",
   "steps": "Steps",
@@ -56,5 +58,5 @@
   "light": "Light",
   "dark": "Dark",
   "productStatus": "Early access foundation",
-  "productStatusDescription": "Food entries are currently held in app memory for this development stage. They are not synced or saved after the app closes."
+  "productStatusDescription": "Food entries are saved on this device. Account sync and cloud backup are not connected yet."
 }
