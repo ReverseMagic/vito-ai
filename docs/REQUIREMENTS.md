@@ -137,7 +137,7 @@ Motion, animation, transitions, visual effects, and microinteractions are requir
 - Track daily steps and burned/activity calories, with explicit provenance: user-entered, device-imported, estimated, or calculated.
 - Support running, weightlifting/strength, and other manually described workouts.
 - Manual workout entry must work without a wearable. Minimum fields: type, date, free-text description; time, duration, distance, sets/reps/load, effort, and calorie estimate are optional unless a selected calculation requires them.
-- Track dated body-weight entries with units and history. Editing a value must not rewrite unrelated history.
+- Body-weight history is a candidate capability only; it is not part of the confirmed MVP until the product owner explicitly approves it.
 - Do not add exercise calories back into the food budget until a single explicit calculation policy is approved. Manually entered burned calories must never be presented as measured.
 
 ### Food capture methods
@@ -160,7 +160,7 @@ Motion, animation, transitions, visual effects, and microinteractions are requir
 | HYD-002 | Water entries support units, edit/delete, and daily totals | Unit/widget tests |
 | ACT-006 | Steps and burned calories show provenance and measurement/estimate status | Data contract tests and UI review |
 | ACT-007 | Running, weightlifting, and free-text workouts can be created, edited, deleted | Journey tests |
-| BODY-002 | Dated weight history preserves units and unrelated records | Persistence tests |
+| BODY-002 (candidate) | Dated weight history preserves units and unrelated records | Not in confirmed MVP scope; requires explicit product-owner approval |
 | CAP-008 | All seven capture methods cover loading, empty, error, cancel, retry, recovery | Journey matrix |
 | CAP-009 | AI/voice/OCR outputs are editable drafts requiring explicit confirmation | Integration tests |
 | DATA-001 | Displayed values have traceable provenance and unit semantics | Data-contract audit |
