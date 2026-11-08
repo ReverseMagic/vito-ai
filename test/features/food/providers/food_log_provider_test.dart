@@ -9,7 +9,7 @@ void main() {
       final ProviderContainer container = ProviderContainer();
       addTearDown(container.dispose);
 
-      const FoodEntry entry = FoodEntry(
+      final FoodEntry entry = FoodEntry(
         id: 'entry-1',
         name: 'Oats',
         caloriesKcal: 150,
@@ -30,7 +30,7 @@ void main() {
       final ProviderContainer container = ProviderContainer();
       addTearDown(container.dispose);
 
-      const FoodEntry entry = FoodEntry(
+      final FoodEntry entry = FoodEntry(
         id: 'entry-2',
         name: 'Apple',
         caloriesKcal: 95,
