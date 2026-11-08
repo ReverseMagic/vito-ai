@@ -38,6 +38,7 @@
   "back": "رجوع",
   "noDiaryEntries": "سجلك فارغ",
   "diaryEmptyDescription": "سيظهر الطعام الذي تضيفه هنا.",
+  "removeEntry": "حذف الإدخال",
   "entryRemoved": "تم حذف الإدخال",
   "activityTitle": "تحرك بطريقتك.",
   "activityDescription": "ستظهر أنشطتك وتمارينك هنا.",
