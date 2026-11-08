@@ -57,13 +57,22 @@ class DiaryScreen extends ConsumerWidget {
                         '${_format(entry.carbsGrams)}g ${s.carbs.toLowerCase()} · '
                         '${_format(entry.fatGrams)}g ${s.fat.toLowerCase()}',
                       ),
-                      trailing: Text('${entry.caloriesKcal} kcal'),
-                      onLongPress: () {
-                        ref.read(foodLogProvider.notifier).remove(entry.id);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(s.entryRemoved)),
-                        );
-                      },
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text('${entry.caloriesKcal} kcal'),
+                          IconButton(
+                            tooltip: s.removeEntry,
+                            onPressed: () {
+                              ref.read(foodLogProvider.notifier).remove(entry.id);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(s.entryRemoved)),
+                              );
+                            },
+                            icon: const Icon(Icons.delete_outline),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
