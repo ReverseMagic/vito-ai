@@ -6,8 +6,11 @@
 ## Nutrition and hydration
 Track calories, carbohydrates, protein, total fat, total sugars, dietary fiber, sodium, and water. Canonical units, rounding, source, serving basis, and missing-data semantics must be explicit. Do not conflate sodium with salt or total sugars with added sugars. Unknown values are not zero.
 
-## Activity and body weight
-Track steps, burned/activity calories, running, weightlifting/strength, other workouts, free-text manual workout descriptions, and dated body-weight records. Manual workout logging must work without a wearable. Minimum workout fields are type, date, and description; duration, time, distance, sets/reps/load, effort, and calorie estimate are optional. Distinguish user-entered, imported, estimated, and calculated values. Do not silently add exercise calories to the food budget.
+## Activity and workouts
+Track steps, burned/activity calories, running, weightlifting/strength, other workouts, and free-text manual workout descriptions. Manual workout logging must work without a wearable. Minimum workout fields are type, date, and description; duration, time, distance, sets/reps/load, effort, and calorie estimate are optional. Distinguish user-entered, imported, estimated, and calculated values. Do not silently add exercise calories to the food budget.
+
+## Body weight (candidate, not approved)
+Body-weight history appeared in earlier product planning but was not explicitly confirmed as a required capability. Do not include it in committed MVP scope or implement it until the product owner confirms it.
 
 ## Required food capture methods
 1. Camera meal photo scan.
@@ -43,6 +46,11 @@ Flutter app with authenticated Supabase session
 ```
 
 The Gemini key exists only in Supabase Edge Function secrets. It must never appear in Flutter source/assets/build configuration, Git, client responses, logs, or analytics. Local development uses an ignored local secrets file; production uses Supabase Dashboard or CLI secret management. Do not retain raw photos/audio by default. Define consent, retention, deletion, and vendor data handling before launch. The Gemini model, fallback policy, prompts, output schema, evaluation set, and budgets remain open.
+
+## Current app implementation snapshot — 2026-11-08
+- Implemented in the first Flutter slice: manual food entry for calories, carbohydrates, protein, fat, total sugars, fiber, and sodium; local SQLite persistence; water intake quick-add in 250 ml increments; daily summaries; English/Arabic localization; system/light/dark themes.
+- These features are code-present but not yet runtime-verified because Flutter/Dart execution is unavailable in the current coding environment. They must not be marked accepted until CI/device evidence exists.
+- Not implemented yet: steps/device imports, workout entry, all six non-manual capture methods, food catalog search, Supabase account sync, and Gemini Edge Functions.
 
 ## Still undecided
 - Gemini model/version, fallback, voice/audio model, retention, evaluation, and usage budget.

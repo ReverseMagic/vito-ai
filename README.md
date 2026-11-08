@@ -1,30 +1,62 @@
 # Vito AI
 
-A mobile-first nutrition and calorie-tracking product for iOS and Android, with Arabic and English support.
+A bilingual nutrition companion for Android and iOS.
 
-> Working product name: Vito AI. Brand identity and final product positioning remain subject to product-owner confirmation.
+## Requirements
 
-## Product constraints
+- Flutter stable 3.47.9 managed with FVM
+- Dart bundled with that Flutter SDK
+- Android Studio and Android SDK for Android builds
+- Xcode on macOS for iOS builds
 
-- Platforms: iOS and Android phones only. No web, desktop, or tablet-first product.
-- Languages: Arabic and English, with first-class RTL and LTR behavior.
-- Appearance: system, light, and dark themes.
-- Flutter and Dart; feature-first organization.
-- Riverpod with handwritten/manual providers.
-- GoRouter without route code generation.
-- No Freezed and no code generation packages.
-- Centralized design system, localization, configuration, and shared behavior.
+## Setup
 
-## Engineering approach
+```sh
+fvm install
+fvm flutter pub get
+```
 
-This repository is governed by [AGENTS.md](AGENTS.md). Product scope and measurable acceptance criteria live in [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md). Expanded nutrition, activity, food-capture, Supabase, and Gemini requirements are in [docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md](docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md). The proposed persistence model is in [docs/DATA_MODEL.md](docs/DATA_MODEL.md), and proposed AI/backend request contracts are in [docs/EDGE_FUNCTION_CONTRACTS.md](docs/EDGE_FUNCTION_CONTRACTS.md). Architecture and product decisions live in [docs/DECISIONS.md](docs/DECISIONS.md). Current Flutter SDK and dependency compatibility research is in [docs/TECHNICAL_FOUNDATION_RESEARCH.md](docs/TECHNICAL_FOUNDATION_RESEARCH.md). Current project state lives in [docs/PROJECT.md](docs/PROJECT.md), known issues live in [docs/ISSUES.md](docs/ISSUES.md), product/competitor/food-data research is in [docs/PRODUCT_DISCOVERY.md](docs/PRODUCT_DISCOVERY.md), and candidate user flows/navigation are documented in [docs/USER_JOURNEYS.md](docs/USER_JOURNEYS.md) and [docs/INFORMATION_ARCHITECTURE.md](docs/INFORMATION_ARCHITECTURE.md).
+This first implementation slice contains Flutter application code and automated Dart checks. Native Android/iOS runner projects are not checked in yet; generate them once from the repository root:
 
-We prioritize understandable UX, low cognitive load, data correctness, privacy, accessibility, reliability, and measured performance over feature count or architectural ceremony.
+```sh
+fvm flutter create --platforms=android,ios --project-name=vito_ai --org=com.reversemagic .
+```
 
-## Status
+Then run on a connected device or simulator:
 
-Repository foundation and product definition are being established. The data model and Edge Function contracts are proposals pending review. No app feature should be described as implemented until it exists and passes its acceptance checks.
+```sh
+fvm flutter devices
+fvm flutter run
+```
 
-## Planned setup
+## Checks
 
-Exact Flutter/Dart SDK and package versions will be pinned only after checking current stable releases and compatibility. Setup/run/test commands will be added after the Flutter project is scaffolded and verified.
+```sh
+fvm dart format --output=none --set-exit-if-changed .
+fvm flutter analyze
+fvm flutter test
+```
+
+## Current implementation
+
+- Four-tab mobile shell: Today, Diary, Activity, Profile.
+- Manual food entry for calories, carbohydrates, protein, fat, total sugars, fiber, and sodium.
+- Quick-add water intake in 250 ml increments.
+- Food and water entries persist in a local SQLite database on the device.
+- Unknown nutrient values remain SQL NULL and are shown as unknown, not zero.
+- Today summaries include calories, macros, other nutrients, and water intake.
+- English/Arabic localization; Flutter localization supplies RTL direction.
+- System/light/dark appearance selection.
+- SQLite repositories and Riverpod async state.
+
+## Not implemented yet
+
+- Persistent appearance/language preferences and calorie/nutrient goal setup.
+- Supabase authentication, account sync, schema migrations, and RLS policies.
+- Gemini-backed AI capture, barcode/catalog search, label scanning, camera/gallery, and voice capture.
+- Activity/workout entry and device health integrations.
+- Backup/export/deletion flows.
+
+**Development limitation:** food and water logs are stored locally on this device only. They are not synced or backed up to an account. Native Android/iOS runner projects must be generated using the command above before launching on a phone.
+
+The product/engineering decision history and detailed requirements are maintained in [docs/](docs/).

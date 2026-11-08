@@ -15,7 +15,7 @@
 - Feature-first architecture.
 - Riverpod with manual providers only.
 - GoRouter without code generation.
-- No Freezed and no code generation packages.
+- No Freezed and no third-party code-generation packages. Flutter's built-in ARB localization generation is used.
 - No web, desktop, or tablet-first product.
 - First-party centralized design system and consistent interaction patterns.
 
@@ -24,44 +24,50 @@
 - Supabase is the selected backend platform. No Supabase project is connected yet.
 - Gemini is the selected AI provider. All Gemini requests must pass through authenticated Supabase Edge Functions.
 - The Gemini API key must be stored only as a server-side Edge Function secret.
-- No production service, database migration, or Edge Function is currently deployed.
 - Food catalog provider, auth methods, Supabase region, storage policy, and backup/restore configuration remain undecided.
 
-## Current documentation status
+## Implemented application slice
 
-- Product requirements and acceptance criteria are documented in `docs/REQUIREMENTS.md` and `docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md`.
-- A proposed persistence model is documented in `docs/DATA_MODEL.md`; it is not yet approved or migrated.
-- Proposed AI/backend contracts are documented in `docs/EDGE_FUNCTION_CONTRACTS.md`; they are not implemented or deployed.
-- Architecture and product decisions are tracked in `docs/DECISIONS.md`.
-- Flutter SDK version, package versions, and supported OS minimums still require current compatibility research and approval.
+- Flutter app entry point, app composition, GoRouter tab shell, manual Riverpod providers, and centralized monochrome light/dark themes.
+- English and Arabic ARB localization with Flutter's built-in localization generation.
+- Today, Diary, Activity, and Profile tabs.
+- Manual food entry for calories, carbohydrates, protein, fat, total sugars, fiber, and sodium.
+- Quick-add water intake in 250 ml increments.
+- Local SQLite database version 2 with an upgrade path from the first schema, indexes, and separate food/water repositories.
+- Food and water values persist locally; unknown nutrient values remain SQL NULL.
+- Today and Diary load asynchronously from SQLite; save/delete operations update the UI after database success.
+- Appearance and language preferences remain in-memory only and reset when the process ends.
+- SQLite repository tests use the FFI implementation.
+- Flutter CI workflow is configured for format, analyze, tests, and an Android debug build after generating the runner.
 
-## Planned structure
+## Toolchain and dependencies
 
-The final structure will be confirmed in an architecture decision before scaffolding. Expected boundaries:
+- FVM SDK pin: Flutter 3.47.9 (stable).
+- Dart constraint: >=3.12.0 <4.0.0; Dart is supplied by the pinned Flutter SDK.
+- `flutter_riverpod: ^3.5.0`.
+- `go_router: ^18.1.3`.
+- `sqflite: ^2.4.5`.
+- Dev dependencies: `flutter_lints: ^6.0.0`, `sqflite_common_ffi: ^2.4.5`.
+- Exact resolved dependency versions will be recorded in `pubspec.lock` after CI/package resolution.
 
-```
-lib/
-  app/                 # bootstrap, composition, router, app-level providers
-  core/                # app-agnostic infrastructure and shared technical concerns
-  design_system/       # semantic tokens, themes, typography, components, motion
-  l10n/                # English and Arabic localization resources
-  features/
-    <feature>/
-      models/           # feature-owned immutable app models
-      data/             # repositories, data sources, mapping
-      domain/           # only when meaningful business rules justify it
-      presentation/     # screens, widgets, feature state/providers
-test/
-integration_test/
-docs/
-```
+## Not implemented / blocked
 
-Do not create empty directories or speculative layers merely to match this sketch.
+- Native Android/iOS runner projects are not checked in yet; README documents the one-time Flutter platform generation command.
+- Persistent appearance/language preferences and nutrition goal setup.
+- Supabase authentication, account sync, schema migrations, and RLS policies.
+- Gemini-backed AI capture, barcode/catalog search, label scanning, camera/gallery, and voice capture.
+- Activity/workout entry and device health integrations.
+- Backup/export/deletion flows.
+- No Supabase project, production backend, Edge Function, or provider credentials are configured.
 
-## Environments and services
+## Architecture and product documentation
 
-Use separate development, staging, and production configuration. Secrets belong in secret managers, never in Git. Supabase publishable keys may be present in the mobile client only with RLS and least-privilege policies; service-role credentials and Gemini credentials must remain server-side.
+- Product requirements: `docs/REQUIREMENTS.md` and `docs/TRACKING_AND_CAPTURE_REQUIREMENTS.md`.
+- Proposed account/cloud persistence model: `docs/DATA_MODEL.md` (not approved or migrated).
+- Proposed AI/backend contracts: `docs/EDGE_FUNCTION_CONTRACTS.md` (not implemented or deployed).
+- Architecture decisions: `docs/DECISIONS.md`.
+- Project setup and current state: repository `README.md`.
 
 ## Release status
 
-Not started. Store listing, bundle identifiers, signing, privacy disclosures, supported OS versions, and release pipelines require explicit decisions and verification. No mobile feature, backend, migration, build, or test is currently claimed as implemented.
+Development only. No release build, device verification, accessibility audit, performance profile, store submission, or production deployment has been completed. The local SQLite database is not a backup or cross-device sync solution.
